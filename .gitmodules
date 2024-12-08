@@ -1,3 +1,6 @@
 [submodule "Frontend"]
 	path = Frontend
 	url = https://bilal-emerssive@github.com/bilal-emerssive/cost-estimator-gizmo.git
+[submodule "cost-estimator-gizmo"]
+	path = cost-estimator-gizmo
+	url = https://bilal-emerssive@github.com/bilal-emerssive/cost-estimator-gizmo.git
