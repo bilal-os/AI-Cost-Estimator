@@ -1,0 +1,10 @@
+flask
+flask-cors
+python-docx
+PyPDF2
+groq
+mammoth
+tensorflow
+pandas
+scikit-learn
+matplotlib
