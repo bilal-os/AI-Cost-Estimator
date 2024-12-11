@@ -23,6 +23,9 @@ def register_estimations_routes(app, groq_api_key):
         Echoes back the received data with a mock estimation result
         """
         try:
+            # Log the incoming request data
+            print(f"Request Data: {request.form.to_dict()}")
+            
             # Extract text from requirements document if provided
             requirements_doc = request.files.get('requirementsDocument')
             extracted_text = ""
@@ -41,6 +44,7 @@ def register_estimations_routes(app, groq_api_key):
                 
                 # Perform Function Point Analysis
                 fpa_analysis = fpa_analyzer.analyze_requirements(extracted_text)
+                print("Function Point Analysis:", fpa_analysis)
 
             # Parse and process cost drivers
             cost_drivers = json.loads(request.form.get('costDrivers', '[]'))
@@ -54,28 +58,27 @@ def register_estimations_routes(app, groq_api_key):
             effort_multiplier = 1.0
             for driver in processed_cost_drivers:
                 effort_multiplier *= driver.get('numerical_value', 1.0)
+            print(f"Effort Multiplier: {effort_multiplier}")
 
             # Calculate project metrics
             estimation_results = fpa_analyzer.calculate_project_metrics(fpa_analysis)
+            print("Estimation Results:", estimation_results)
             
             # Update estimation results with the calculated effort multiplier
             estimation_results['effortMultiplier'] = effort_multiplier
 
             # Get estimated KLOC from project metrics
             estimated_kloc = estimation_results.get('estimatedKLOC', 0)
+            print(f"Estimated KLOC: {estimated_kloc}")
             
             # Predict effort using the trained model
-            predicted_effort = effort_model.predict_effort(
-                processed_cost_drivers, 
-                estimated_kloc
-            )
+            predicted_effort = effort_model.predict_effort(processed_cost_drivers, estimated_kloc)
+            print(f"Predicted Effort: {predicted_effort}")
             
             # Calculate development time
-            development_time = effort_model.calculate_development_time(
-                predicted_effort, 
-                estimated_kloc
-            )
-            
+            development_time = effort_model.calculate_development_time(predicted_effort, estimated_kloc)
+            print(f"Development Time: {development_time}")
+
             # Update estimation results with predicted effort and time
             estimation_results['developmentEffort'] = predicted_effort
             estimation_results['developmentTime'] = development_time

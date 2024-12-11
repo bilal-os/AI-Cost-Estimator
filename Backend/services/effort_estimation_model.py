@@ -97,6 +97,10 @@ class EffortEstimationModel:
         :param estimated_kloc: Optional estimated thousands of lines of code (not used in this version)
         :return: Development time in months
         """
+        # Ensure effort is a real number, not a complex number
+        if isinstance(effort, complex):
+            effort = effort.real  # Get the real part if it's a complex number
+
         # COCOMO II development time calculation
         B = 0.91 + 0.01 * len(self.cost_driver_order)
         development_time = B * (effort ** 0.28)

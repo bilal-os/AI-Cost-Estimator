@@ -1,4 +1,5 @@
 /venv/
+/Backend/venv/
 node_modules/
 *.pyc
 *.log
